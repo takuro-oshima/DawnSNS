@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Http\Request;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Http\Request;
+use Request as PostRequest;
+// use Request;
 
 class RegisterController extends Controller
 {
@@ -46,14 +48,46 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'username' => 'required|string|max:255',
-            'mail' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:4|confirmed',
-        ]);
-    }
+
+    // protected function validator(array $data)
+    // {
+    //     return Validator::make($data, [
+    //         'username' => 'required|string|min:4|max:12',
+    //         'mail' => 'required|string|email|min:4|max:12|unique:users',
+    //         'password' => 'required|string|min:4|max:12|confirmed',
+    //     ]);
+    // }
+
+    // public $validateRules = [
+    //     'username'=>'required|string|min:4|max:12',
+    //     'mail'=>'required|string|email|min:4|max:12|unique:users',
+    //     'password'=>'required|string|min:4|max:12|confirmed',
+    // ];
+
+    // public $validateMessages = [
+    //     "required" => "4文字以上、12文字以内で入力して下さい。",
+    //     "email" => "メールアドレスの形式で入力してください。",
+    // ];
+
+    // public function registerIndex()
+    // {
+    //     // postしたデータをすべて取得
+    //     $data = Request::all();
+
+    //     //バリデーションをインスタンス化
+    //     $val = Validator::make(
+    //         $data,
+    //         $this->validateRules,
+    //         $this->validateMessages
+    //     );
+
+    //     //バリデーションNGの場合
+    //     if($val->fails()){
+    //         return redirect('/register')->withErrors($val)->withInput();
+    //     }
+
+    //     return 'OK!';
+    // }
 
     /**
      * Create a new user instance after a valid registration.
@@ -75,14 +109,32 @@ class RegisterController extends Controller
     //     return view("auth.register");
     // }
 
+    public $validateRules = [
+        'username'=>'required|string|min:4|max:12',
+        'mail'=>'required|string|email|min:4|max:12|unique:users',
+        'password'=>'required|string|min:4|max:12|confirmed',
+    ];
+
+    public $validateMessages = [
+        "required" => "4文字以上、12文字以内で入力して下さい。",
+        "email" => "メールアドレスの形式で入力してください。",
+    ];
+
     public function register(Request $request){
         if($request->isMethod('post')){
-            $data = $request->input();
-
-            $this->create($data);
-            return redirect('added');
+            $data = PostRequest::all();
+            $val = Validator::make(
+                $data,
+                $this->validateRules,
+                $this->validateMessages
+                );
+        if($val->fails()){
+            return redirect('/register')->withErrors($val)->withInput();
+        }else {
+            return view('/added');
         }
-        return view('auth.register');
+    }
+    return view('auth.register');
     }
 
     public function added(){

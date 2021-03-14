@@ -10,7 +10,6 @@ class UsersTableSeeder extends Seeder
             'username' => 'taro',
             'mail' => 'taro@co.jp',
             'password' => 'password',
-            'bio' => 'hello',
         ]);
     }
 }
