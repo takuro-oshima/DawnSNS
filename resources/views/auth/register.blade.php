@@ -19,8 +19,8 @@
 @if($errors->has('password'))<p class="error">{{ $errors->first('password') }}</p> @endif
 
 {{ Form::label('パスワード確認') }}
-{{ Form::password('password-confirm',null,['class' => 'input']) }}
-@if($errors->has('password-confirm'))<p class="error">{{ $errors->first('password-confirm') }}</p> @endif
+{{ Form::password('password_confirmation',null,['class' => 'input']) }}
+@if($errors->has('password_confirmation'))<p class="error">{{ $errors->first('password_confirmation') }}</p> @endif
 
 
 {{ Form::submit('登録') }}
