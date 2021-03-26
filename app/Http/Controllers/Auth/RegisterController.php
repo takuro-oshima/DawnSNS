@@ -76,8 +76,10 @@ class RegisterController extends Controller
     ];
 
     public $validateMessages = [
-        "required" => "4文字以上、12文字以内で入力して下さい。",
+        "required" => "必須項目です",
+        "username.min" => "4文字以上、12文字以内で入力して下さい",
         "email" => "メールアドレスの形式で入力してください。",
+        "password.min" => "4文字以上、12文字以内で入力して下さい",
         "confirmed" => "パスワードが一致しません。",
     ];
 
@@ -92,7 +94,8 @@ class RegisterController extends Controller
         if($val->fails()){
             return redirect('/register')->withErrors($val)->withInput();
         }else {
-            return view('auth.added');
+            $name = $request->only('username');
+            return view('auth.added',compact('name'));
         }
     }
     return view('auth.register');
